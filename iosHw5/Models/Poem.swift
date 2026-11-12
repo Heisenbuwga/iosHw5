@@ -23,6 +23,9 @@ struct Poem: Identifiable, Hashable {
 
 @Observable
 final class ReadingStore {
+    #if DEBUG
+    var demoShowsNotes = false
+    #endif
     var favorites: Set<Int> {
         didSet { UserDefaults.standard.set(Array(favorites), forKey: "favoritePoems") }
     }

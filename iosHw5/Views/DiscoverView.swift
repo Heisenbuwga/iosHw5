@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct DiscoverView: View {
+    let store: ReadingStore
     @State private var path: [Poem] = []
     @Environment(\.horizontalSizeClass) private var sizeClass
     private let featured = Poem.library[0]
@@ -48,18 +49,20 @@ struct DiscoverView: View {
                     .frame(maxWidth: .infinity)
             }.background(Ink.background)
                 .navigationTitle("月讀")
-                .navigationDestination(for: Poem.self) { poem in PoemDetailView(poem: poem) }
-                #if DEBUG
+                .navigationDestination(for: Poem.self) { poem in PoemDetailView(poem: poem, store: store) }
+        }
+        #if DEBUG
                 .task {
                     if ProcessInfo.processInfo.arguments.contains("-reading") { path = [featured] }
                     if ProcessInfo.processInfo.arguments.contains("-demo") {
                         try? await Task.sleep(for: .seconds(4))
+                        guard !Task.isCancelled else { return }
                         path = [featured]
                         try? await Task.sleep(for: .seconds(11))
+                        guard !Task.isCancelled else { return }
                         path = []
                     }
                 }
-                #endif
-        }
+        #endif
     }
 }

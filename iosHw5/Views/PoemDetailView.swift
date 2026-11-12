@@ -2,7 +2,7 @@ import SwiftUI
 
 struct PoemDetailView: View {
     let poem: Poem
-    @Environment(ReadingStore.self) private var store
+    let store: ReadingStore
     @Environment(\.horizontalSizeClass) private var sizeClass
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var showNotes = false
@@ -41,14 +41,10 @@ struct PoemDetailView: View {
         }
         .onAppear { withAnimation(reduceMotion ? nil : .easeOut(duration: 0.8)) { appeared = true } }
         #if DEBUG
-        .task {
-            if ProcessInfo.processInfo.arguments.contains("-demo") {
-                try? await Task.sleep(for: .seconds(3))
-                flipPage()
-                try? await Task.sleep(for: .seconds(3))
-                store.toggle(poem)
-                try? await Task.sleep(for: .seconds(2))
-                flipPage()
+        .onChange(of: store.demoShowsNotes) { _, newValue in
+            guard ProcessInfo.processInfo.arguments.contains("-demo") else { return }
+            withAnimation(reduceMotion ? .linear(duration: 0.1) : .spring(response: 0.55)) {
+                showNotes = newValue
             }
         }
         #endif

@@ -45,3 +45,8 @@ SwiftUI #88：結合動畫效果的電子書 App。以深青色山水、月光�
 - [iPad 示範影片](Submission/Medium/Moonlit-iPad-demo.mp4)
 
 古典詩作屬公版文字；賞析為本專案撰寫。山水與 App Icon 由程式繪製，未使用第三方圖片。
+
+## 驗證
+
+`sh Verification/verify-model.sh` 可檢查詩作完整性、ID 唯一性與收藏持久化。
+示範錄製腳本位於 `Verification/capture-demo.py`；使用前需先啟動模擬器並建置 App，執行方式見檔案頂部。

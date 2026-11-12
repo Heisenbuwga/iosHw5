@@ -2,7 +2,7 @@ import SwiftUI
 
 struct LibraryView: View {
     let favoritesOnly: Bool
-    @Environment(ReadingStore.self) private var store
+    let store: ReadingStore
     @State private var query = ""
     @State private var theme = "全部"
     private let themes = ["全部", "月色", "山水", "四季", "思念"]
@@ -49,7 +49,7 @@ struct LibraryView: View {
                 }
             }
             .navigationTitle(favoritesOnly ? "我的收藏" : "詩集目錄")
-            .navigationDestination(for: Poem.self) { poem in PoemDetailView(poem: poem) }
+            .navigationDestination(for: Poem.self) { poem in PoemDetailView(poem: poem, store: store) }
         }
     }
 }
