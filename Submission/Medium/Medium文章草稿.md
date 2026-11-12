@@ -37,7 +37,7 @@ NavigationLink(value: poem) {
     Text(poem.title)
 }
 .navigationDestination(for: Poem.self) { poem in
-    PoemDetailView(poem: poem)
+    PoemDetailView(poem: poem, store: store)
 }
 ```
 
