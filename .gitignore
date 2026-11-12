@@ -2,3 +2,6 @@
 xcuserdata/
 DerivedData/
 *.xcuserstate
+
+# Local publishing drafts and preparation notes
+Submission/

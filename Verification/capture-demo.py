@@ -3,7 +3,7 @@ import subprocess, time, signal, sys
 from pathlib import Path
 sim = sys.argv[1]
 kind = sys.argv[2]
-root = Path(__file__).resolve().parents[1] / 'Submission' / 'Medium'
+root = Path(__file__).resolve().parents[1] / 'Demo'
 def run(*args):
     return subprocess.run(['xcrun','simctl',*args],check=True,capture_output=True,text=True)
 def stop():

@@ -15,9 +15,9 @@ SwiftUI #88：結合動畫效果的電子書 App。以深青色山水、月光�
 - **iPad**：寬版雙欄閱讀；窄視窗自動採直向排列。
 - 支援系統減少動態效果；插畫以 SwiftUI Shape 繪製。
 
-## 題目對照
+## 技術實作
 
-| 要求 | 實作 |
+| 項目 | 實作 |
 | --- | --- |
 | 多頁面、獨立檔案 | DiscoverView、LibraryView、PoemDetailView |
 | NavigationStack、NavigationLink、傳資料、標題 | NavigationLink(value: poem) → navigationDestination(for: Poem.self)，閱讀頁顯示詩名 |
@@ -25,24 +25,27 @@ SwiftUI #88：結合動畫效果的電子書 App。以深青色山水、月光�
 | List 搭配 Identifiable | LibraryView 的 List / ForEach(poems) |
 | TabView & Tab | ContentView 的漫遊、詩集、收藏三分頁 |
 | 動畫 | 月光、山巒、詩句進場、翻頁過場、收藏 symbolEffect |
-| iPhone & iPad 畫面 | 下列截圖與 Submission/Medium 示範影片 |
+| iPhone & iPad 畫面 | 下列截圖與 Demo 示範影片 |
 
 ## 展示
 
 ### iPhone
-![iPhone 首頁](Submission/Medium/images/01-iphone-home.png)
-![iPhone 閱讀](Submission/Medium/images/02-iphone-reading.png)
+
+![iPhone 首頁](Demo/images/01-iphone-home.png)
+![iPhone 閱讀](Demo/images/02-iphone-reading.png)
 
 ### iPad
-![iPad 雙欄閱讀](Submission/Medium/images/05-ipad-reading.png)
 
-## 繳交素材
+![iPad 雙欄閱讀](Demo/images/05-ipad-reading.png)
 
-- [作業說明](Submission/作業說明.md)
-- [Medium 文章草稿](Submission/Medium/Medium文章草稿.md)
-- [發布步驟](Submission/Medium/發布步驟.md)
-- [iPhone 示範影片](Submission/Medium/Moonlit-iPhone-demo.mp4)
-- [iPad 示範影片](Submission/Medium/Moonlit-iPad-demo.mp4)
+### 示範影片
+
+- [iPhone 示範影片](Demo/Moonlit-iPhone-demo.mp4)
+- [iPad 示範影片](Demo/Moonlit-iPad-demo.mp4)
+
+影片錄製自 iOS 模擬器，使用僅在 Debug 啟用的自動示範流程，展示導覽、原文與賞析切換及分頁操作。一般啟動 App 時使用按鈕手動操作。
+
+## 內容與素材來源
 
 古典詩作屬公版文字；賞析為本專案撰寫。山水與 App Icon 由程式繪製，未使用第三方圖片。
 
