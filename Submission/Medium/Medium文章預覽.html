@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>月讀・唐詩漫遊</title><style>body{max-width:820px;margin:60px auto;padding:24px;background:#0d1c26;color:#eee8d6;font:18px/1.9 system-ui}h1,h2{color:#e3c282}img,video{max-width:100%;max-height:760px;display:block;margin:auto;border-radius:18px}figure{margin:36px 0}figcaption{text-align:center;color:#aaa}pre{white-space:pre-wrap;background:#172c33;padding:24px;border-radius:14px;font-size:14px}video{margin-bottom:32px}</style><h1>#88 用 SwiftUI 做一本會呼吸的詩集：月讀・唐詩漫遊</h1><p>&gt; 發布前請依自己的實際理解與製作經驗修改文字，並加入影片連結。</p><p>這次的作品是「月讀・唐詩漫遊」。我希望電子書不只是把文字放上螢幕，而是讓讀者在閱讀之前，先進入詩的氣氛。App 以深青色、米白紙張與月光金為主色，收錄八首唐詩，每首都有原文與簡短賞析。</p><p>GitHub：https://github.com/Heisenbuwga/iosHw5</p><h2>從首頁走進一首詩</h2><p>首頁有一幅以 SwiftUI Shape 畫出的山水。月光緩慢呼吸，山巒也有輕微位移；點選「開始閱讀」就會進入《靜夜思》。下方的精選卡片則提供其他作品的閱讀入口。</p><figure><img alt="iPhone 首頁" src="images/01-iphone-home.png"><figcaption>iPhone 首頁</figcaption></figure><h2>把詩整理成資料</h2><p>每首詩使用 `Poem` struct 表示，遵從 `Identifiable` 與 `Hashable`。`id` 提供穩定的識別值，標題、作者、主題、詩句與賞析都存在同一筆資料中。八首詩放在 `Poem.library` array，首頁與目錄共用這份資料。</p><pre><code>struct Poem: Identifiable, Hashable {
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>月讀｜SwiftUI 作業</title><style>body{max-width:760px;margin:60px auto;padding:0 24px;background:#faf8f1;color:#243a31;font:18px/1.9 system-ui}h1{font-size:38px;line-height:1.4}h2{margin-top:46px}pre{overflow:auto;padding:24px;background:#102f26;color:#f8edcf;border-radius:16px;font-size:14px;line-height:1.7}figure{text-align:center;margin:30px 0}img,video{width:100%;max-width:360px;border-radius:22px}video{display:block;margin:auto}figcaption{font-size:14px;color:#65756c}p code{font-size:.9em;background:#eee9dd;padding:2px 5px;border-radius:4px}a{color:#277357}figure.ipad img,figure.ipad video{max-width:600px}</style><body><h1>用 SwiftUI 做一個動畫電子書 App：月讀・唐詩漫遊</h1><p>這次的 #88 作業要製作多頁面的電子書 App，結合動畫、導覽、List 與 TabView。我選擇「唐詩選讀」，把八首詩整理成資料，讓使用者可以從首頁進入閱讀、查看賞析，並收藏喜歡的作品。</p><h2>Demo</h2><figure><video controls preload="metadata" src="Moonlit-iPhone-demo.mp4"></video><figcaption>iPhone Demo</figcaption></figure><figure class="ipad"><video controls preload="metadata" src="Moonlit-iPad-demo.mp4"></video><figcaption>iPad Demo</figcaption></figure><p>【發布前：上傳 YouTube 並把兩支影片網址放在這裡。】影片為 iPhone 與 iPad 模擬器實際畫面的 Debug 自動展示，依序呈現首頁、閱讀、賞析切換、返回與分頁切換；不是實際手指點擊錄影。一般啟動 App 時，仍透過按鈕手動操作。</p><h2>畫面設計</h2><p>以深青色山水、米白色閱讀卡片與月光金營造安靜的閱讀氣氛。App 分成「漫遊」、「詩集」與「收藏」三個分頁，閱讀頁則依照裝置寬度調整排列方式。</p><figure><img src="images/01-iphone-home.png" alt="iPhone 首頁"><figcaption>iPhone 首頁</figcaption></figure><p>首頁的山水以 SwiftUI Shape 繪製，月光與山巒帶有緩慢動畫。點選「開始閱讀」或下方的精選卡片，就能進入對應的詩作。</p><figure><img src="images/02-iphone-reading.png" alt="iPhone 閱讀頁"><figcaption>iPhone 閱讀頁</figcaption></figure><p>閱讀頁上方顯示詩名、作者與主題，下方是原文卡片。點「翻頁・讀賞析」可以切換內容，右上角書籤用來收藏，卡片上的字體按鈕則可放大文字。</p><figure><img src="images/03-iphone-library.png" alt="詩集目錄"><figcaption>詩集目錄</figcaption></figure><p>目錄列出八首詩，可以依月色、山水、四季、思念篩選，也能搜尋詩名、作者或詩句。</p><figure><img src="images/07-iphone-favorites.png" alt="收藏頁"><figcaption>收藏頁</figcaption></figure><p>收藏的詩會集中顯示在這裡。資料寫入 UserDefaults，重新開啟 App 後仍會保留；尚未收藏時則顯示操作提示。</p><figure class="ipad"><img src="images/05-ipad-reading.png" alt="iPad 雙欄閱讀"><figcaption>iPad 雙欄閱讀</figcaption></figure><p>iPhone 使用上下排列，iPad 寬版環境則將山水與閱讀卡片分成左右兩欄。版面由 horizontalSizeClass 決定，iPad 窄視窗也能回到上下排列。</p><h2>用 struct 與 array 整理詩作</h2><pre><code>struct Poem: Identifiable, Hashable {
     let id: Int
     let title: String
     let author: String
@@ -7,10 +7,47 @@
     let note: String
     let symbol: String
 }
-</code></pre><h2>NavigationStack 與資料傳遞</h2><p>首頁和目錄都以 `NavigationStack` 管理導覽，`NavigationLink(value: poem)` 傳出使用者選擇的詩，再由 `navigationDestination` 建立閱讀頁。閱讀頁透過 `let poem: Poem` 接收資料，navigation bar 使用詩名作為標題。</p><pre><code>NavigationLink(value: poem) {
-    Text(poem.title)
+</code></pre><p><code>Poem</code> 保存詩名、作者、主題、原文與賞析。八首詩放在 <code>Poem.library</code> array，首頁與目錄共用這份資料。<code>Identifiable</code> 提供每首詩的識別值，<code>Hashable</code> 則讓詩作可以作為 NavigationStack 的導覽資料。</p><h2>用 NavigationStack 切換頁面與傳資料</h2><pre><code>NavigationStack {
+    List {
+        ForEach(Poem.library) { poem in
+            NavigationLink(value: poem) {
+                Text(poem.title)
+            }
+        }
+    }
+    .navigationTitle(&quot;詩集目錄&quot;)
+    .navigationDestination(for: Poem.self) { poem in
+        PoemDetailView(poem: poem, store: store)
+    }
 }
-.navigationDestination(for: Poem.self) { poem in
-    PoemDetailView(poem: poem, store: store)
+</code></pre><p>這是目錄導覽的簡化片段，<code>store</code> 是外層傳入的共用 ReadingStore。點選某首詩時，NavigationLink 將該筆 <code>Poem</code> 傳給下一頁，閱讀頁透過 <code>let poem: Poem</code> 接收，並使用 <code>navigationTitle(poem.title)</code> 在 navigation bar 顯示詩名。</p><h2>List 搭配 Identifiable 資料</h2><pre><code>ForEach(poems) { poem in
+    NavigationLink(value: poem) {
+        Text(poem.title)
+    }
 }
-</code></pre><p>實際專案將 destination modifier 放在 NavigationStack 裡的內容容器上，讓所有詩作入口共用同一個目的頁。</p><h2>List 與三個分頁</h2><p>詩集目錄使用 `List` 和 `ForEach(poems)`。因為 `Poem` 遵從 `Identifiable`，SwiftUI 可以辨識每一列。目錄可以依月色、山水、四季、思念篩選，也可以搜尋詩名、作者與詩句。</p><p>最外層使用 `TabView` 與 iOS 18 的 `Tab`，分成「漫遊」、「詩集」與「收藏」。收藏資料透過 `ReadingStore` 共用，並寫入 UserDefaults，因此重新開啟 App 仍能保留。</p><figure><img alt="詩集目錄" src="images/03-iphone-library.png"><figcaption>詩集目錄</figcaption></figure><h2>用動畫襯托閱讀</h2><p>閱讀頁的詩句依序淡入並向上移動；點「翻頁・讀賞析」後，文字會以位移與透明度的組合過場切換，紙張也有輕微的 3D 傾斜。收藏按鈕則使用 SF Symbols 的彈跳效果。</p><p>這裡的翻頁是閱讀內容的動畫切換，並非模擬真實紙張捲曲。動畫由 `@State` 驅動，搭配 `withAnimation`、`transition` 和 `rotation3DEffect` 完成。當系統啟用「減少動態效果」時，山水停留在靜態畫面，閱讀過場則簡化。</p><figure><img alt="閱讀原文" src="images/02-iphone-reading.png"><figcaption>閱讀原文</figcaption></figure><h2>在 iPad 上留更多空間</h2><p>iPhone 採上下排列，先看山水與詩名，再閱讀原文。iPad 寬版環境改用雙欄：左側是山水，右側是閱讀卡片。版面由 `horizontalSizeClass` 決定，因此 iPad 窄視窗也能回到直向排列。</p><figure><img alt="iPad 閱讀" src="images/05-ipad-reading.png"><figcaption>iPad 閱讀</figcaption></figure><h2>示範影片</h2><p>請在這裡加入 iPhone 與 iPad 的影片網址。素材為模擬器錄影，Debug `-demo` 參數會自動執行導覽、賞析切換、收藏與分頁展示；不是實際手指點擊錄影。一般啟動不會自動播放操作。</p><h2>製作心得（請依實際經驗調整）</h2><p>這個作品可以從三個方向回顧：如何把畫面與資料拆開、如何讓多個分頁共用收藏狀態，以及如何讓動畫輔助閱讀而不干擾文字。也可以補充自己最喜歡的一首詩，以及接下來想加入的功能。</p><h2>影片預覽</h2><video controls src="Moonlit-iPhone-demo.mp4"></video><video controls src="Moonlit-iPad-demo.mp4"></video></html>
+</code></pre><p>實際目錄將這段 ForEach 放在 List 的 Section 裡。<code>poems</code> 是經過搜尋、主題或收藏條件篩選後的 array。因為 Poem 遵從 Identifiable，SwiftUI 能辨識每一列，不必另外使用陣列索引當作識別值。</p><h2>用 TabView 與 Tab 製作分頁</h2><pre><code>@State private var store = ReadingStore()
+@State private var selectedTab = 0
+
+TabView(selection: $selectedTab) {
+    Tab(&quot;漫遊&quot;, systemImage: &quot;moon.stars&quot;, value: 0) {
+        DiscoverView(store: store)
+    }
+    Tab(&quot;詩集&quot;, systemImage: &quot;books.vertical&quot;, value: 1) {
+        LibraryView(favoritesOnly: false, store: store)
+    }
+    Tab(&quot;收藏&quot;, systemImage: &quot;bookmark&quot;, value: 2) {
+        LibraryView(favoritesOnly: true, store: store)
+    }
+}
+</code></pre><p><code>selectedTab</code> 記錄目前選取的分頁，<code>store</code> 則保存所有頁面共用的收藏資料。三個分頁都接收同一份 ReadingStore，因此在閱讀頁收藏後，目錄與收藏分頁也能顯示更新結果。這裡使用的 Tab 語法需要 iOS 18 以上。</p><h2>用狀態變化帶出動畫</h2><pre><code>@State private var showNotes = false
+
+private func flipPage() {
+    withAnimation(
+        reduceMotion
+            ? .linear(duration: 0.1)
+            : .spring(response: 0.55, dampingFraction: 0.85)
+    ) {
+        showNotes.toggle()
+    }
+}
+</code></pre><p><code>showNotes</code> 決定卡片顯示原文或賞析。切換時搭配 transition 的位移與透明度，以及 rotation3DEffect 的輕微傾斜，形成翻頁過場；這是內容切換動畫，並非真實紙張捲曲。</p><p>詩句進場也會依序淡入並向上移動，月光與山巒使用重複動畫，收藏圖示則使用 symbolEffect。<code>reduceMotion</code> 讀取系統「減少動態效果」設定，啟用時停止山水動畫並簡化閱讀過場。</p><h2>檔案拆分與作業需求</h2><p><code>ContentView.swift</code> 管理分頁與共用資料；<code>Poem.swift</code> 定義詩作模型、array 與收藏儲存；<code>DiscoverView.swift</code>、<code>LibraryView.swift</code>、<code>PoemDetailView.swift</code> 分別負責首頁、目錄與閱讀頁；<code>MoonLandscape.swift</code> 專門繪製山水與動畫。</p><p>這樣的拆分對應題目的多檔案頁面要求，也包含 NavigationStack、NavigationLink 傳資料、navigation bar 標題、自訂 Identifiable struct、array、List，以及 TabView 與 Tab。iPhone 與 iPad 的畫面和影片都放在專案的 Submission 資料夾。</p><h2>測試與限制</h2><p>專案已在 iPhone 17 與 iPad Pro 11 吋模擬器（iOS 26.5）執行，並檢查首頁、原文、賞析、目錄與收藏畫面。模型驗證包含八首詩的內容完整性、ID 唯一性、收藏切換、重新讀取儲存與取消收藏。</p><p>目前提供八首固定詩作，沒有下載書籍、雲端同步或朗讀功能。收藏只保存在本機，刪除 App 會清除資料。畫面採固定深色主題。古典詩作為公版文字，賞析為本專案撰寫；山水與 App Icon 由程式繪製，沒有使用第三方圖片。</p><h2>心得草稿</h2><p>【發布前請依自己的實際學習經驗修改。】</p><p>這次練習讓我理解，電子書 App 不只是把文字放到畫面上，還需要整理每首詩的資料、設計頁面之間的導覽，以及讓不同分頁共用收藏狀態。我將詩作放在 Poem，再把首頁、目錄與閱讀頁拆開，讓每個檔案的工作比較清楚。</p><p>另外，動畫需要配合閱讀節奏。詩句逐行出現能引導視線，翻頁過場能提示內容已切換，但動畫太多也可能干擾閱讀，因此加入了「減少動態效果」的處理。比較 iPhone 與 iPad 的版面後，也更能理解同一份資料如何用不同排列方式呈現。未來可以增加更多詩作、閱讀進度或朗讀功能。</p><h2>GitHub</h2><p><a href="https://github.com/Heisenbuwga/iosHw5">完整程式碼：Heisenbuwga/iosHw5</a></p></body></html>
